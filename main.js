@@ -8,6 +8,7 @@ let App = React.createClass({
       score:0,
       func:["+","-","*"],
       rand3:Math.floor(Math.random()*3),
+      q:"?"
    }
   },
 
@@ -92,30 +93,32 @@ let App = React.createClass({
     })
   },
   render(){
-    let { newAnswer,rand1,rand2,rand3,score,correctAnswer,func} = this.state;
+    let { newAnswer,rand1,rand2,rand3,score,correctAnswer,func,q} = this.state;
 
     var barStyle =score*10 + '%';
     return (
       <div>
-        <h1>Math Game</h1>
-        <h4>Question: {rand1} {func[rand3]} {rand2} = ?</h4>
+        <h5>Math Game</h5>
+        <h1>Question: {rand1} {func[rand3]} {rand2} = {q}</h1>
         <span className="row">
-        <button onClick={this.buttonInput} value ="0">0</button>
-        <button onClick={this.buttonInput} value ="1">1</button>
-        <button onClick={this.buttonInput} value ="2">2</button>
-        <button onClick={this.buttonInput} value ="3">3</button>
-        <button onClick={this.buttonInput} value ="4">4</button>
-        <button onClick={this.buttonInput} value ="5">5</button>
-        <button onClick={this.buttonInput} value ="6">6</button>
-        <button onClick={this.buttonInput} value ="7">7</button>
-        <button onClick={this.buttonInput} value ="8">8</button>
-        <button onClick={this.buttonInput} value ="9">9</button>
-        <button onClick={this.buttonInput} value ="0">0</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="0">0</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="1">1</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="2">2</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="3">3</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="4">4</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="5">5</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="6">6</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="7">7</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="8">8</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="9">9</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="0">0</button>
         </span>
         <span className="row">
         <input type="text" ref="newAnswer" value = {newAnswer} onChange={this.onInputChange}/>
-        <button disabled ={newAnswer.length <1} onClick={this.clear}>Clear</button>
-        <button onClick={this.checkAnswer}>Skip</button>
+        </span>
+        <span className="row">
+        <button disabled ={newAnswer.length <1} className ="btn btn-sm btn-info" onClick={this.clear}>Clear</button>
+        <button className ="btn btn-sm btn-danger" onClick={this.checkAnswer}>Skip</button>
         <button disabled ={newAnswer.length <1} className ="btn btn-sm btn-warning" onClick={this.checkAnswer}>Submit</button>
         </span>
         <h4 id="showAnswer">Correct Answer: {correctAnswer}</h4>
