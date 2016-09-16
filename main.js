@@ -2,13 +2,14 @@ let App = React.createClass({
   getInitialState(){
      return{
       newAnswer: "",
-      correctAnswer:'',
+      correctAnswer:' ',
       rand1:Math.floor((Math.random() * 20)),
       rand2:Math.floor((Math.random() * 20)),
       score:0,
       func:["+","-","*"],
       rand3:Math.floor(Math.random()*3),
-      q:"?"
+      lose: 'hidden',
+      win: 'hidden'
    }
   },
 
@@ -18,58 +19,33 @@ let App = React.createClass({
 
   checkAnswer(){
     let answer = this.refs.newAnswer.value;
-    let {rand1,rand2,rand3} = this.state;
-    if( rand3 == 0) {
-    if( answer == (rand1+rand2)){
-      this.setState({
-        score: this.state.score +1,
-        correctAnswer: rand1+rand2,
-        newAnswer: ''
-      })
-    }
-    else{
-      this.setState({
-        score: this.state.score -1,
-        correctAnswer: rand1+rand2,
-        newAnswer: ''
-      })
-    }
-  }
-  else if (rand3 ==1){
-    if( answer == (rand1-rand2)){
-      this.setState({
-        score: this.state.score +1,
-        correctAnswer: rand1-rand2,
-        newAnswer: ''
-      })
-    }
-    else{
-      this.setState({
-        score: this.state.score -1,
-        correctAnswer: rand1-rand2,
-        newAnswer: ''
-      })
-    }
+    let {rand1,rand2,rand3,score,lose,win} = this.state;
+    let tempAnswer ="";
+    let tempScore =0;
 
-  }
-  else if (rand3 ==2){
-    if( answer == (rand1*rand2)){
-      this.setState({
-        score: this.state.score +1,
-        correctAnswer: rand1*rand2,
-        newAnswer: ''
+    if( rand3 == 0) {tempAnswer =rand1+rand2;}
+    else if (rand3 ==1){tempAnswer =rand1-rand2;}
+    else if (rand3 ==2){tempAnswer =rand1*rand2;}
 
-      })
-    }
-    else{
-      this.setState({
-        score: this.state.score -1,
-        correctAnswer: rand1*rand2,
+    if( answer == tempAnswer ){tempScore= score +1;
+    this.setState({
+      lose:'hidden',
+      win:'show'
+    })
+  }
+    else{tempScore= score -1;
+    this.setState({
+      lose:'show',
+      win:'hidden'
+    })
+  }
+
+    this.setState({
+        score: tempScore,
+        correctAnswer: tempAnswer,
         newAnswer: ''
       })
-    }
 
-  }
     setTimeout(() => {
     this.setState({
       rand1:Math.floor((Math.random() * 20)),
@@ -93,13 +69,15 @@ let App = React.createClass({
     })
   },
   render(){
-    let { newAnswer,rand1,rand2,rand3,score,correctAnswer,func,q} = this.state;
+    let { newAnswer,rand1,rand2,rand3,score,correctAnswer,func,lose,win} = this.state;
 
     var barStyle =score*10 + '%';
     return (
       <div>
-        <h5>Math Game</h5>
-        <h1>Question: {rand1} {func[rand3]} {rand2} = {q}</h1>
+        <h5>Mini Math Game</h5>
+        <h1>Question: {rand1} {func[rand3]} {rand2} = {newAnswer} ?</h1>
+        <h3 ref="correctAnswer" className={lose}>Sorry! The correct answer was {correctAnswer}</h3>
+        <h2 className={win}> Yay! Way to go!</h2>
         <span className="row">
         <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="0">0</button>
         <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="1">1</button>
@@ -112,6 +90,7 @@ let App = React.createClass({
         <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="8">8</button>
         <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="9">9</button>
         <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="0">0</button>
+        <button className ="btn btn-sm btn-default" onClick={this.buttonInput} value ="-">-</button>
         </span>
         <span className="row">
         <input type="text" ref="newAnswer" value = {newAnswer} onChange={this.onInputChange}/>
@@ -121,7 +100,6 @@ let App = React.createClass({
         <button className ="btn btn-sm btn-danger" onClick={this.checkAnswer}>Skip</button>
         <button disabled ={newAnswer.length <1} className ="btn btn-sm btn-warning" onClick={this.checkAnswer}>Submit</button>
         </span>
-        <h4 id="showAnswer">Correct Answer: {correctAnswer}</h4>
         <h4>Total Score: {score} </h4>
         <div className="progress">
         <div className="progress-bar progress-bar-striped active" role="progressbar"

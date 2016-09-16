@@ -1,0 +1,11 @@
+h3 {
+  color:red;
+}
+h2{
+  color:green;
+}
+.hidden { display:none; }
+.show{display:inline;}
+.well{
+  text-align: center;
+}
